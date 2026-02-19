@@ -1,0 +1,59 @@
+{
+  "name": "@agonx402/platform",
+  "version": "0.1.0",
+  "description": "Merchant SDK for Agon — accept USDC payments with reserve/consume/release",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./next": {
+      "types": "./dist/next.d.ts",
+      "import": "./dist/next.js"
+    },
+    "./express": {
+      "types": "./dist/express.d.ts",
+      "import": "./dist/express.js"
+    },
+    "./fastify": {
+      "types": "./dist/fastify.d.ts",
+      "import": "./dist/fastify.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agonx402/agon-sdk",
+    "directory": "packages/platform"
+  },
+  "homepage": "https://github.com/agonx402/agon-sdk/tree/main/packages/platform",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agonx402/types": "^0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^22"
+  },
+  "peerDependencies": {
+    "next": ">=14",
+    "express": ">=4",
+    "fastify": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "next": { "optional": true },
+    "express": { "optional": true },
+    "fastify": { "optional": true }
+  }
+}

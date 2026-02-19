@@ -1,0 +1,41 @@
+{
+  "name": "@agonx402/client",
+  "version": "0.1.0",
+  "description": "Consumer SDK for Agon — deposit, withdraw, and pay with USDC",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agonx402/agon-sdk",
+    "directory": "packages/client"
+  },
+  "homepage": "https://github.com/agonx402/agon-sdk/tree/main/packages/client",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agonx402/types": "^0.1.0",
+    "@solana/web3.js": "^1",
+    "@solana/spl-token": "^0.4",
+    "tweetnacl": "^1",
+    "bs58": "^6"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^22"
+  }
+}

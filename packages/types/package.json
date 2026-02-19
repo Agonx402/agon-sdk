@@ -1,0 +1,33 @@
+{
+  "name": "@agonx402/types",
+  "version": "0.1.0",
+  "description": "Shared type definitions for the Agon payment SDK",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agonx402/agon-sdk",
+    "directory": "packages/types"
+  },
+  "homepage": "https://github.com/agonx402/agon-sdk/tree/main/packages/types",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}
