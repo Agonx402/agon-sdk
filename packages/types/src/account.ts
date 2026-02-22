@@ -6,9 +6,10 @@
 export interface Account {
   accountId: string;
   ownerWallet: string;
+  /** Total funds on the platform (available + reserved) */
   balance: bigint;
+  /** Funds held by active authorizations */
   reservedBalance: bigint;
-  consumedBalance: bigint;
   createdAt: string;
   updatedAt: string;
   autoRefill: AutoRefillSettings | null;
@@ -19,13 +20,11 @@ export interface AccountBalance {
   ownerWallet: string;
   /** Unique HD-derived deposit address for this account */
   depositAddress: string;
-  /** Total balance (includes reserved and consumed-unsettled) */
+  /** Total balance (available + reserved) */
   balance: bigint;
-  /** Funds currently reserved by active authorizations */
+  /** Funds currently held by active authorizations */
   reservedBalance: bigint;
-  /** Funds consumed but not yet settled on-chain */
-  consumedBalance: bigint;
-  /** Funds available for new authorizations: balance - reservedBalance */
+  /** Funds available for new authorizations */
   availableBalance: bigint;
   currency: "USDC";
   autoRefill: AutoRefillSettings | null;

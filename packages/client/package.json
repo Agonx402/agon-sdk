@@ -1,6 +1,6 @@
 {
   "name": "@agonx402/client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Consumer SDK for Agon — deposit, withdraw, and pay with USDC",
   "type": "module",
   "license": "MIT",
@@ -9,7 +9,9 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

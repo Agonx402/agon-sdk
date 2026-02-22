@@ -1,6 +1,6 @@
 {
   "name": "@agonx402/platform",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Merchant SDK for Agon — accept USDC payments with reserve/consume/release",
   "type": "module",
   "license": "MIT",
@@ -9,7 +9,9 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -52,8 +54,14 @@
     "fastify": ">=4"
   },
   "peerDependenciesMeta": {
-    "next": { "optional": true },
-    "express": { "optional": true },
-    "fastify": { "optional": true }
+    "next": {
+      "optional": true
+    },
+    "express": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    }
   }
 }
