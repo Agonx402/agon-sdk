@@ -134,6 +134,18 @@ The `agon.fetch()` method creates a fresh token automatically for each request.
 | `rotateKey()` | Both | Revoke current key and get a new one |
 | `revokeKey()` | Both | Revoke the current API key |
 
+## Important Risk and Security Notice
+
+AGON is an early-stage, devnet payment infrastructure project. It functions as a custodial service: after deposit, funds are swept to and held in project-controlled wallets.
+
+While the core payment flows are operational, the platform is still under active development and has not yet undergone a formal security audit or obtained insurance coverage. The project is also in the process of completing VASP registration in Georgia.
+
+As with any early-stage financial technology, there are material risks including (but not limited to) technical failures, operational errors, or unforeseen events that could result in loss of funds.
+
+We strongly recommend testing with very small amounts only and monitoring your activity closely.
+
+We are committed to transparency and continuous improvement — live Proof of Reserves, public multisig wallets, and regular updates are available on the site.
+
 ## License
 
 MIT
