@@ -1,6 +1,6 @@
 {
   "name": "@agonx402/types",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Shared type definitions for the Agon payment SDK",
   "type": "module",
   "license": "MIT",
