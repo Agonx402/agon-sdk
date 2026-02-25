@@ -95,7 +95,7 @@ When a request arrives:
 4. **Serve** — run your route handler
 5. **Consume** (on success) or **Release** (on failure) — finalize the reservation
 
-The consumer sends a short-lived, single-use auth token (not their raw API key) — the merchant never sees `ak_xxx`. Each token can only authorize one reservation, preventing replay attacks. If no `X-AGON-TOKEN` is present, a `402 Payment Required` response is returned with instructions on how to pay.
+The consumer sends a short-lived auth token (not their raw API key) — the merchant never sees `ak_xxx`. Tokens are single-use by default, or multi-use if the consumer set a budget spend ceiling. If no `X-AGON-TOKEN` is present, a `402 Payment Required` response is returned with instructions on how to pay.
 
 If the consumer has spending limits that block the request and includes override headers (`X-AGON-OVERRIDE-SIG`, `X-AGON-OVERRIDE-MSG`), these are forwarded to Agon for wallet signature verification.
 

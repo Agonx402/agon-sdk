@@ -107,21 +107,21 @@ When calling merchant APIs, the SDK automatically creates a short-lived auth tok
 You can also create tokens manually for custom integrations:
 
 ```ts
-const { token, expires_in } = await agon.createAuthToken({ maxAmount: 1_000_000 })
+const { token, expires_in } = await agon.createAuthToken({ maxAmount: 1_000_000, budget: 5_000_000 })
 // Use token in X-AGON-TOKEN header when calling a merchant
-// maxAmount caps the charge at $1 — merchant cannot request more
+// maxAmount caps the charge at $1 per request
+// budget caps the total cumulative spend for this multi-use token at $5
 ```
 
-Tokens are signed by the Agon server, expire in 60 seconds (configurable up to 5 min),
-and are **single-use** — each token can only authorize one reservation, preventing replay attacks.
-The `agon.fetch()` method creates a fresh token automatically for each request.
+Tokens are signed by the Agon server and expire in 60 seconds (configurable up to 5 min). By default, they are **single-use** (consumed on the first `/authorize`). If you provide a `budget`, they become multi-use until the spend ceiling is hit. The `agon.fetch()` method creates a fresh single-use token automatically piece of the request.
 
 ## API Reference
 
 | Method | Mode | Description |
 |--------|------|-------------|
 | `register()` | Keypair | Create account, get API key and deposit address |
-| `createAuthToken({ ttl?, maxAmount? })` | Both | Create a short-lived, amount-capped token for merchant requests |
+| `registerAgent({ betaToken? })` | Keypair | Create an AI agent account using Native Ed25519 signatures |
+| `createAuthToken({ ttl?, maxAmount?, budget? })` | Both | Create a short-lived token (single-use or multi-use if budget is set) |
 | `getAccount()` | Both | Get account info from API key (sets accountId internally) |
 | `getBalance()` | Both | Get current balance (requires accountId) |
 | `deposit(amountUsdc)` | Keypair | Send USDC on-chain and credit the account |

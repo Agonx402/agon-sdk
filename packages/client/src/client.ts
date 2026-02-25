@@ -100,6 +100,7 @@ export class AgonClient {
     this.http = new AgonHttpClient({
       baseUrl: config.baseUrl,
       apiKey: config.apiKey,
+      wallet: this.wallet,
       timeout: config.timeout,
     });
 
@@ -131,6 +132,41 @@ export class AgonClient {
     return {
       account: result,
       apiKey: result.api_key,
+    };
+  }
+
+  /**
+   * Register a new Agon account natively for an AI agent.
+   * Requires Keypair mode. Uses Ed25519 signatures, completely bypassing Privy.
+   * Automatically provisions the account and sets the internal state.
+   */
+  async registerAgent(opts?: { betaToken?: string }): Promise<{ account: RegisterAccountResponse }> {
+    this.requireKeypair("registerAgent");
+
+    const timestamp = Date.now();
+    const messageStr = `agon:register:${timestamp}`;
+    const messageBytes = new TextEncoder().encode(messageStr);
+    const signatureBytes = nacl.sign.detached(messageBytes, this.wallet!.secretKey);
+
+    const result = await this.http.post<any>("/account/register/agent", {
+      wallet_address: this.wallet!.publicKey.toBase58(),
+      signature: bs58.encode(signatureBytes),
+      timestamp,
+      ...(opts?.betaToken ? { beta_token: opts.betaToken } : {}),
+    });
+
+    // Agents do not need to save the API key because they can use signature auth,
+    // but the backend issues one as a fallback.
+    this.apiKey = result.api_key;
+    this.accountId = result.account_id;
+    this.depositAddress = result.deposit_address;
+
+    // Switch HTTP client to use the new API key for subsequent requests 
+    // (though signature auth works too).
+    this.http.setApiKey(result.api_key);
+
+    return {
+      account: result,
     };
   }
 
@@ -443,6 +479,7 @@ export class AgonClient {
    *
    * @param opts.ttl - Token time-to-live in seconds (default 60, max 300).
    * @param opts.maxAmount - Maximum charge amount in USDC smallest units. If set, the merchant cannot charge more than this.
+   * @param opts.budget - Optional aggregate spend budget for a multi-use token.
    * @returns The signed token string and its TTL.
    *
    * @example
@@ -451,11 +488,12 @@ export class AgonClient {
    *   headers: { 'X-AGON-TOKEN': token },
    * });
    */
-  async createAuthToken(opts?: { ttl?: number; maxAmount?: number }): Promise<CreateTokenResponse> {
+  async createAuthToken(opts?: { ttl?: number; maxAmount?: number; budget?: number }): Promise<CreateTokenResponse> {
     this.requireAuth();
     return this.http.post<CreateTokenResponse>("/account/create-token", {
       ttl: opts?.ttl ?? 60,
       ...(opts?.maxAmount !== undefined ? { max_amount: opts.maxAmount } : {}),
+      ...(opts?.budget !== undefined ? { budget: opts.budget } : {}),
     });
   }
 

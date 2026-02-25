@@ -1,4 +1,7 @@
 import { AgonError, type AgonErrorBody } from "@agonx402/types";
+import type { Keypair } from "@solana/web3.js";
+import bs58 from "bs58";
+import nacl from "tweetnacl";
 
 /**
  * HTTP client for calling the Agon backend from the consumer SDK.
@@ -6,17 +9,20 @@ import { AgonError, type AgonErrorBody } from "@agonx402/types";
 export class AgonHttpClient {
   private baseUrl: string;
   private apiKey: string | null;
+  private wallet: Keypair | null;
   private timeout: number;
   private fetchImpl: typeof fetch;
 
   constructor(config: {
     baseUrl: string;
     apiKey?: string;
+    wallet?: Keypair | null;
     timeout?: number;
     fetch?: typeof fetch;
   }) {
     this.baseUrl = config.baseUrl.replace(/\/$/, "");
     this.apiKey = config.apiKey ?? null;
+    this.wallet = config.wallet ?? null;
     this.timeout = config.timeout ?? 10_000;
     this.fetchImpl = config.fetch ?? globalThis.fetch;
   }
@@ -48,6 +54,15 @@ export class AgonHttpClient {
 
     if (this.apiKey) {
       headers["X-AGON-KEY"] = this.apiKey;
+    } else if (this.wallet) {
+      const timestamp = Date.now();
+      const messageStr = `agon:auth:${timestamp}`;
+      const messageBytes = new TextEncoder().encode(messageStr);
+      const signatureBytes = nacl.sign.detached(messageBytes, this.wallet.secretKey);
+
+      headers["X-AGON-WALLET"] = this.wallet.publicKey.toBase58();
+      headers["X-AGON-SIGNATURE"] = bs58.encode(signatureBytes);
+      headers["X-AGON-TIMESTAMP"] = timestamp.toString();
     }
 
     try {

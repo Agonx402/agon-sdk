@@ -42,6 +42,8 @@ export interface CreateTokenRequest {
   ttl?: number;
   /** Maximum charge amount the merchant can request (USDC smallest units). If omitted, no cap is applied beyond spending controls. */
   max_amount?: number;
+  /** Optional aggregate spend budget for a multi-use token. */
+  budget?: number;
 }
 
 export interface CreateTokenResponse {
@@ -51,6 +53,8 @@ export interface CreateTokenResponse {
   expires_in: number;
   /** The max amount cap baked into the token, if one was set */
   max_amount?: number;
+  /** The original budget set for this multi-use token, if applicable */
+  budget?: number;
 }
 
 /**
@@ -71,6 +75,7 @@ export type DenialReason =
   | "invalid_consumer_token"
   | "consumer_key_revoked"
   | "token_already_used"
+  | "token_budget_exceeded"
   | "amount_exceeds_token_cap"
   | "duplicate_request"
   | "platform_not_found"
