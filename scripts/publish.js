@@ -64,11 +64,11 @@ packages.forEach(pkgName => {
 });
 
 // 4. Run commands
-const runCommand = (cmd, errorMessage) => {
-  console.log(`Running: ${cmd}`);
+const runCommand = (cmd, errorMessage, runCwd = rootDir) => {
+  console.log(`Running: ${cmd} in ${path.relative(rootDir, runCwd) || 'root'}`);
   if (!isDryRun) {
     try {
-      execSync(cmd, { stdio: 'inherit', cwd: rootDir });
+      execSync(cmd, { stdio: 'inherit', cwd: runCwd });
     } catch (error) {
       console.error(errorMessage);
       console.error(error.message);
@@ -79,6 +79,26 @@ const runCommand = (cmd, errorMessage) => {
 
 runCommand('npm install', 'Failed to update package-lock.json with npm install.');
 runCommand('npm run build', 'Build failed.');
-runCommand('npm publish --workspaces --access public', 'Failed to publish packages.');
+
+packages.forEach(pkgName => {
+  const pkgDir = path.join(packagesDir, pkgName);
+  if (fs.existsSync(path.join(pkgDir, 'package.json'))) {
+    // Determine flag based on environment: if we have CI, use provenance.
+    const publishCmd = process.env.CI ? 'npm publish --access public --provenance' : 'npm publish --access public';
+    runCommand(publishCmd, `Failed to publish ${pkgName}.`, pkgDir);
+  }
+});
+
+if (!isDryRun) {
+  try {
+    console.log('\nCommitting and Tagging Release...');
+    runCommand('git add .', 'Failed to add files to git.');
+    runCommand(`git commit -m "chore(release): v${newVersion}"`, 'Failed to commit files.');
+    runCommand(`git tag v${newVersion}`, `Failed to tag v${newVersion}.`);
+    console.log('You can now push these changes and tags using `git push --follow-tags`.');
+  } catch (e) {
+    console.warn('\nSkipped git commit and tag. Is the workspace dirty or are you not in a git repo?');
+  }
+}
 
 console.log(`\nSuccessfully bumped and ${isDryRun ? 'simulated publishing' : 'published'} version ${newVersion}!`);
