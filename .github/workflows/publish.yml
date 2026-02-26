@@ -38,3 +38,10 @@ jobs:
 
       - name: Push Git Commit and Tag
         run: git push origin HEAD:main --follow-tags
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          gh release create v$NEW_VERSION --title "v$NEW_VERSION" --generate-notes
