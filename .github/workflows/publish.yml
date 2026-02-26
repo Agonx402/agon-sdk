@@ -35,8 +35,6 @@ jobs:
 
       - name: Build and Publish
         run: npm run release
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push Git Commit and Tag
         run: git push origin HEAD:main --follow-tags
