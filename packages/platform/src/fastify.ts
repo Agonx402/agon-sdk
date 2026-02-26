@@ -50,7 +50,7 @@ export function agonPlugin(
 
     try {
       authResult = await core.authorize(consumerToken, requestId, price, override);
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof AgonError) {
         reply.status(err.statusCode).send(err.toJSON());
         return;
@@ -73,9 +73,9 @@ export function agonPlugin(
     if (!reservationId) return;
 
     if (reply.statusCode < 400) {
-      core.consume(reservationId).catch(() => {});
+      core.consume(reservationId).catch(() => { });
     } else {
-      core.release(reservationId).catch(() => {});
+      core.release(reservationId).catch(() => { });
     }
   });
 

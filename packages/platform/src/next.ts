@@ -65,7 +65,7 @@ export function withAgon(
 
     try {
       authResult = await core.authorize(consumerToken, requestId, price, override);
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof AgonError) {
         return Response.json(err.toJSON(), { status: err.statusCode });
       }
@@ -190,7 +190,7 @@ export function agonProxy(config: {
       }
 
       return null;
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof AgonError) {
         return Response.json(err.toJSON(), { status: err.statusCode }) as NextResponse;
       }

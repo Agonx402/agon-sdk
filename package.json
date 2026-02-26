@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "clean": "turbo run clean && rm -rf node_modules",
+    "clean": "turbo run clean && node -e \"try { fs.rmSync('node_modules', { recursive: true, force: true }) } catch (e) {}\"",
     "lint": "turbo run lint"
   },
   "devDependencies": {

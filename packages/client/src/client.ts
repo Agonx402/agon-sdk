@@ -9,10 +9,8 @@ import {
   type SpendingControls,
   type OverrideSigner,
   type CreateTokenResponse,
-  USDC,
-  AGON_HEADERS,
-  AgonError,
 } from "@agonx402/types";
+import { USDC, AGON_HEADERS, AgonError } from "@agonx402/types";
 import { AgonHttpClient } from "./http.js";
 import { sendUsdc, approveDelegate, revokeDelegate, usdcToUnits } from "./solana.js";
 
@@ -639,7 +637,7 @@ export class AgonClient {
         status: proxyResult.status,
         headers: proxyResult.headers ?? {},
       });
-    } catch (err) {
+    } catch (err: any) {
       if (!(err instanceof AgonError)) throw err;
 
       if (!err.isSpendingLimitExceeded() || !err.isOverrideAvailable()) {

@@ -45,7 +45,7 @@ export function agonMiddleware(config: AgonPlatformConfig) {
 
     try {
       authResult = await core.authorize(consumerToken, requestId, price, override);
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof AgonError) {
         res.status(err.statusCode).json(err.toJSON());
         return;
@@ -69,9 +69,9 @@ export function agonMiddleware(config: AgonPlatformConfig) {
       originalEnd.apply(res, args);
 
       if (res.statusCode < 400) {
-        core.consume(reservationId).catch(() => {});
+        core.consume(reservationId).catch(() => { });
       } else {
-        core.release(reservationId).catch(() => {});
+        core.release(reservationId).catch(() => { });
       }
     };
 
