@@ -1,6 +1,6 @@
 {
   "name": "@agonx402/client",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Consumer SDK for Agon — deposit, withdraw, and pay with USDC",
   "type": "module",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@agonx402/types": "^0.1.5",
+    "@agonx402/types": "^0.1.6",
     "@solana/web3.js": "^1",
     "@solana/spl-token": "^0.4",
     "tweetnacl": "^1",
