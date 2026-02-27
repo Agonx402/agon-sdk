@@ -620,7 +620,12 @@ export class AgonClient {
     init: RequestInit | undefined,
     paymentRequired: string
   ): Promise<Response> {
-    const paymentRequiredBase64 = toBase64(paymentRequired);
+    // Determine if the header is already base64 encoded (legacy x402 merchants)
+    // or if it's raw JSON. 
+    let paymentRequiredBase64 = paymentRequired;
+    if (paymentRequired.trim().startsWith("{")) {
+      paymentRequiredBase64 = toBase64(paymentRequired);
+    }
     const requestId = `proxy_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
 
     try {
