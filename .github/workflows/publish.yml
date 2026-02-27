@@ -35,9 +35,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: package-lock.json
+
+      - name: Update NPM
+        run: npm install -g npm@latest
 
       - name: Install Root Dependencies
         run: npm ci
