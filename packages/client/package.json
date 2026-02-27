@@ -20,10 +20,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/agonx402/agon-sdk",
+    "url": "https://github.com/Agonx402/agon-sdk",
     "directory": "packages/client"
   },
-  "homepage": "https://github.com/agonx402/agon-sdk/tree/main/packages/client",
+  "homepage": "https://github.com/Agonx402/agon-sdk/tree/main/packages/client",
   "scripts": {
     "build": "tsc -b",
     "clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
