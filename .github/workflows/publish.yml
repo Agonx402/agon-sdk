@@ -2,6 +2,16 @@ name: Publish Agon SDK
 
 on:
   workflow_dispatch:
+    inputs:
+      versionBump:
+        description: 'Version Bump Type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
   publish:
@@ -32,11 +42,73 @@ jobs:
       - name: Install Root Dependencies
         run: npm ci
 
-      - name: Build and Publish
-        run: npm run release
+      - name: Bump Versions
+        run: |
+          # Bump root version
+          npm version ${{ github.event.inputs.versionBump }} --no-git-tag-version
+
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "Bumping all packages to $NEW_VERSION"
+
+          # Update each package's version
+          for pkg in packages/*; do
+            if [ -f "$pkg/package.json" ]; then
+              cd "$pkg"
+              npm version $NEW_VERSION --no-git-tag-version
+              cd ../..
+            fi
+          done
+
+          # Update internal dependencies
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const newVersion = require('./package.json').version;
+          const pkgsDir = path.join(__dirname, 'packages');
+          const dirs = fs.readdirSync(pkgsDir);
+          
+          dirs.forEach(pkg => {
+            const pkgPath = path.join(pkgsDir, pkg, 'package.json');
+            if (fs.existsSync(pkgPath)) {
+              let config = JSON.parse(fs.readFileSync(pkgPath));
+              ['dependencies', 'devDependencies', 'peerDependencies'].forEach(depType => {
+                if (config[depType]) {
+                  Object.keys(config[depType]).forEach(dep => {
+                    if (dep.startsWith('@agonx402/')) {
+                      config[depType][dep] = '^' + newVersion;
+                    }
+                  });
+                }
+              });
+              fs.writeFileSync(pkgPath, JSON.stringify(config, null, 2) + '\n');
+            }
+          });
+          "
+          
+          # install to update package-lock.json with new versions
+          npm install
+
+      - name: Build Packages
+        run: npm run build
+
+      - name: Publish to NPM
+        run: |
+          for pkg in packages/*; do
+            if [ -f "$pkg/package.json" ]; then
+              echo "Publishing $pkg"
+              cd "$pkg"
+              npm publish --access public --provenance
+              cd ../..
+            fi
+          done
 
       - name: Push Git Commit and Tag
-        run: git push origin HEAD:main --follow-tags
+        run: |
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          git add .
+          git commit -m "chore(release): v$NEW_VERSION"
+          git tag "v$NEW_VERSION"
+          git push origin HEAD:main --follow-tags
 
       - name: Create GitHub Release
         env:
