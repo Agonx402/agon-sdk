@@ -68,7 +68,7 @@ const runCommand = (cmd, errorMessage, runCwd = rootDir) => {
   console.log(`Running: ${cmd} in ${path.relative(rootDir, runCwd) || 'root'}`);
   if (!isDryRun) {
     try {
-      execSync(cmd, { stdio: 'inherit', cwd: runCwd });
+      execSync(cmd, { stdio: 'inherit', cwd: runCwd, env: process.env });
     } catch (error) {
       console.error(errorMessage);
       console.error(error.message);
