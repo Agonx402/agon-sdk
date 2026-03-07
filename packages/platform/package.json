@@ -1,6 +1,6 @@
 {
   "name": "@agonx402/platform",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Merchant SDK for Agon — accept USDC payments with reserve/consume/release",
   "type": "module",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@agonx402/types": "^0.1.6"
+    "@agonx402/types": "^0.2.0"
   },
   "devDependencies": {
     "typescript": "^5",
