@@ -22,7 +22,7 @@ import { Keypair } from '@solana/web3.js'
 
 const wallet = Keypair.fromSecretKey(/* your key */)
 const agon = new AgonClient({
-  baseUrl: 'https://api.agon.so',
+  baseUrl: 'https://api.agonx402.com',
   wallet,
 })
 
@@ -43,7 +43,7 @@ For environments without direct access to a Keypair (e.g. embedded wallets):
 import { AgonClient } from '@agonx402/client'
 
 const agon = new AgonClient({
-  baseUrl: 'https://api.agon.so',
+  baseUrl: 'https://api.agonx402.com',
   apiKey: 'ak_xxx', // from dashboard or previous registration
   signer: async (message) => {
     // Use Privy, Phantom, or any wallet to sign
@@ -76,7 +76,7 @@ When a limit is exceeded, the SDK can auto-override with a wallet signature:
 
 ```ts
 const agon = new AgonClient({
-  baseUrl: 'https://api.agon.so',
+  baseUrl: 'https://api.agonx402.com',
   wallet,
   apiKey: 'ak_xxx',
   onLimitExceeded: async (details) => {

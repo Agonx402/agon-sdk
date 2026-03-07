@@ -22,7 +22,7 @@ type NextHandler = (req: NextRequest) => Promise<NextResponse> | NextResponse;
  * export const GET = withAgon(handler, {
  *   platformKey: process.env.AGON_PLATFORM_KEY!,
  *   price: '$0.001',
- *   agonUrl: 'https://api.agon.so',
+ *   agonUrl: 'https://api.agonx402.com',
  *   description: 'Premium weather data',
  * })
  * ```
@@ -129,7 +129,7 @@ export function withAgon(
  * import { agonProxy } from '@agonx402/platform/next'
  *
  * export default agonProxy({
- *   agonUrl: 'https://api.agon.so',
+ *   agonUrl: 'https://api.agonx402.com',
  *   platformKey: process.env.AGON_PLATFORM_KEY!,
  *   routes: {
  *     '/api/weather': { price: '$0.001', description: 'Weather data' },

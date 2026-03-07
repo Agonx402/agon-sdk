@@ -15,6 +15,16 @@ export interface AgonPlatformConfig {
   mimeType?: string;
   /** Request timeout in ms for calls to Agon backend (default: 5_000) */
   timeout?: number;
+  /**
+   * Optional Solana wallet address for receiving standardx payments.
+   * If omitted, Agon uses the wallet_address from your platform registration.
+   *
+   * Note: StandardX support is always enabled. Any standard x402 buyer can pay
+   * your endpoint without an Agon account. Agon acts as the x402 facilitator
+   * (co-signs as feePayer, broadcasts on-chain). A $0.001 facilitation fee is
+   * deducted from your Agon balance per transaction — ensure your balance stays funded.
+   */
+  walletAddress?: string;
   /** Called when a request is missing a valid payment header */
   onPaymentRequired?: (req: unknown) => void;
   /** Called after successful authorization */
@@ -22,6 +32,7 @@ export interface AgonPlatformConfig {
   /** Called after successful consumption */
   onConsumed?: (reservationId: string, amount: bigint) => void;
 }
+
 
 /**
  * Dynamic pricing function — receives the incoming request,
@@ -74,7 +85,7 @@ export const USDC = {
   /** 1 USDC in smallest units */
   ONE: BigInt(1_000_000),
   /** Devnet USDC mint address */
-  DEVNET_MINT: "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+  DEVNET_MINT: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
   /** Mainnet USDC mint address */
   MAINNET_MINT: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
 } as const;

@@ -2,7 +2,7 @@ import { AgonError, type AgonErrorBody } from "@agonx402/types";
 
 /**
  * HTTP client for calling the Agon backend from the platform SDK.
- * Used internally by the core authorize/consume/release logic.
+ * Used internally by the core authorize/consume/release/standardx logic.
  */
 export class AgonHttpClient {
   private baseUrl: string;
@@ -20,18 +20,30 @@ export class AgonHttpClient {
   }
 
   async post<T>(path: string, body: Record<string, unknown>): Promise<T> {
+    return this.request<T>("POST", path, body);
+  }
+
+  async get<T>(path: string): Promise<T> {
+    return this.request<T>("GET", path);
+  }
+
+  private async request<T>(
+    method: string,
+    path: string,
+    body?: Record<string, unknown>
+  ): Promise<T> {
     const url = `${this.baseUrl}${path}`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.timeout);
 
     try {
       const res = await fetch(url, {
-        method: "POST",
+        method,
         headers: {
-          "Content-Type": "application/json",
+          ...(body ? { "Content-Type": "application/json" } : {}),
           Authorization: `Bearer ${this.platformKey}`,
         },
-        body: JSON.stringify(body),
+        body: body ? JSON.stringify(body) : undefined,
         signal: controller.signal,
       });
 

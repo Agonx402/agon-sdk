@@ -122,7 +122,7 @@ For frameworks not covered above:
 import { AgonPlatformCore, generateRequestId } from '@agonx402/platform'
 
 const core = new AgonPlatformCore({
-  agonUrl: 'https://api.agon.so',
+  agonUrl: 'https://api.agonx402.com',
   platformKey: 'pk_xxx',
   pricing: '$0.001',
 })

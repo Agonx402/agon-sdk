@@ -1,6 +1,6 @@
 # Agon SDK
 
-TypeScript SDKs for the [Agon](https://agon.so) payment layer — deposit USDC once, pay for any API, settle on-chain in batches.
+TypeScript SDKs for the [Agon](https://agonx402.com) payment layer — deposit USDC once, pay for any API, settle on-chain in batches.
 
 **[Full Documentation](https://docs.agonx402.com)**
 
@@ -20,7 +20,7 @@ TypeScript SDKs for the [Agon](https://agon.so) payment layer — deposit USDC o
 import { AgonClient } from '@agonx402/client'
 
 const agon = new AgonClient({
-  baseUrl: 'https://api.agon.so',
+  baseUrl: 'https://api.agonx402.com',
   apiKey: 'ak_live_xxx',
   wallet: myKeypair,
 })
@@ -34,7 +34,7 @@ const res = await agon.fetch('https://api.example.com/data')
 import { agonMiddleware } from '@agonx402/platform/express'
 
 app.use(agonMiddleware({
-  agonUrl: 'https://api.agon.so',
+  agonUrl: 'https://api.agonx402.com',
   platformKey: 'pk_xxx',
   pricing: (req) => 1000, // 0.001 USDC
 }))

@@ -7,7 +7,7 @@
  * import { Keypair } from '@solana/web3.js'
  *
  * const wallet = Keypair.generate()
- * const agon = new AgonClient({ baseUrl: 'https://api.agon.so', wallet })
+ * const agon = new AgonClient({ baseUrl: 'https://api.agonx402.com', wallet })
  *
  * // Register, deposit, and start making paid API calls
  * const { apiKey } = await agon.register()
